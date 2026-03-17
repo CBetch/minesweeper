@@ -39,6 +39,10 @@ public class MinesweeperGame {
 
     // ----- Getters -----
 
+    public Grid getGrid() {
+        return grid;
+    }
+
     public boolean isGameOver() {
         return gameOver;
     }

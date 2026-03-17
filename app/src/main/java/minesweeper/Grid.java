@@ -7,12 +7,10 @@ public class Grid {
     private final Tile[][] tiles;
     private int rows;
     private int cols;
-    private int numberMines;
 
     private Grid(Builder builder) {
         this.rows = builder.rows;
         this.cols = builder.cols;
-        this.numberMines = builder.numberMines;
         this.tiles = initializeGrid(builder.rows, builder.cols);
 
         placeMines(builder.numberMines);
@@ -107,10 +105,6 @@ public class Grid {
 
     public int getCols() {
         return cols;
-    }
-
-    public int getNumberMines() {
-        return numberMines;
     }
 
     public Tile getTile(int row, int col) {

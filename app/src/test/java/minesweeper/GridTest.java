@@ -6,6 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GridTest {
+    private int getNumberMines(Grid grid) {
+        int countedMines = 0;
+        for (int row = 0; row < grid.getRows(); row++) {
+            for (int col = 0; col < grid.getCols(); col++) {
+                if (grid.getTile(row, col).isMine()) countedMines++;
+            }
+        }
+        return countedMines;
+    }
+
     @Test
     public void testGridConstructionPlacesMines() {
         int NUMBER_ROWS = 2;
@@ -17,13 +27,7 @@ public class GridTest {
                 .numberMines(NUMBER_MINES)
                 .build();
 
-        int countedMines = 0;
-        for (int row = 0; row < NUMBER_ROWS; row++) {
-            for (int col = 0; col < NUMBER_COLS; col++) {
-                if (grid.getTile(row, col).isMine()) countedMines++;
-            }
-        }
-        assert(countedMines == 2);
+        assert(getNumberMines(grid) == 2);
     }
 
     @Test
@@ -37,13 +41,7 @@ public class GridTest {
                 .numberMines(NUMBER_MINES)
                 .build();
 
-        int countedMines = 0;
-        for (int row = 0; row < NUMBER_ROWS; row++) {
-            for (int col = 0; col < NUMBER_COLS; col++) {
-                if (grid.getTile(row, col).isMine()) countedMines++;
-            }
-        }
-        assert(countedMines == NUMBER_MINES);
+        assert(getNumberMines(grid) == NUMBER_MINES);
     }
 
     @Test
