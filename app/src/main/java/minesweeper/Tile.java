@@ -66,10 +66,7 @@ public class Tile implements TileObserver {
             for (Tile neighbor : neighbors)
                 if (neighbor.isMine())
                     neighborsWithMine++;
-
-            if (neighborsWithMine > 0) {
-                this.neighborWithMineCount = neighborsWithMine;
-            }
+            this.neighborWithMineCount = neighborsWithMine;
         }
     }
 
@@ -89,7 +86,7 @@ public class Tile implements TileObserver {
         // Cascading reveal of empty tiles
         if (this.isEmpty()) revealNeighbors();
 
-        // TODO - Update display tile
+        // TODO - Tile display
         return false;
     }
 
