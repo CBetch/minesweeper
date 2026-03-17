@@ -15,7 +15,6 @@ public class Grid {
 
         placeMines(builder.numberMines);
         connectNeighbors();
-        updateStatuses();
     }
 
     public static class Builder {
@@ -95,17 +94,8 @@ public class Grid {
         }
     }
 
-    private void updateStatuses() {
-        for (int row = 0; row < this.rows; row++) {
-            for (int col = 0; col < this.cols; col++) {
-                tiles[row][col].updateStatus();
-            }
-        }
-    }
-
     void placeSpecificMine(int row, int col) {
         tiles[row][col].placeMine();
-        updateStatuses();
     }
 
     public Tile getTile(int row, int col) {

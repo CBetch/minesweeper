@@ -1,21 +1,41 @@
 package minesweeper;
 
-import javax.naming.TimeLimitExceededException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tile {
+public class Tile implements TileObserver {
     private boolean hidden;
     private List<Tile> neighbors;
-    private int neighborWtihMineCount;
+    private List<TileObserver> observers;
+    private int neighborWithMineCount;
     private boolean isMine;
 
     public Tile() {
         this.hidden = true;
         this.neighbors = new ArrayList<>();
-        this.neighborWtihMineCount = 0;
+        this.observers = new ArrayList<>();
+        this.neighborWithMineCount = 0;
         this.isMine = false;
     }
+
+    // ---- Observer logic ----
+
+    public void addObserver(TileObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifyObservers() {
+        for (TileObserver observer : observers) {
+            observer.onTileChanged();
+        }
+    }
+
+    @Override
+    public void onTileChanged() {
+        updateStatus();
+    }
+
+    // ----- Neighbor Management -----
 
     private void addNeighbor(Tile neighbor) {
         this.neighbors.add(neighbor);
@@ -24,12 +44,19 @@ public class Tile {
     public void connect(Tile neighbor) {
         this.addNeighbor(neighbor);
         neighbor.addNeighbor(this);
+
+        this.addObserver(neighbor);
+        neighbor.addObserver(this);
     }
+
+    // ----- Mine Logic -----
 
     void placeMine() {
         this.isMine = true;
-        // set neighborWtihMineCount to avoid tile being marked as "empty"
-        this.neighborWtihMineCount = -1;
+        // set neighborWithMineCount to avoid tile being marked as "empty"
+        this.neighborWithMineCount = -1;
+        // Tell neighbors to update their status number
+        notifyObservers();
     }
 
     public void updateStatus() {
@@ -41,10 +68,12 @@ public class Tile {
                     neighborsWithMine++;
 
             if (neighborsWithMine > 0) {
-                this.neighborWtihMineCount = neighborsWithMine;
+                this.neighborWithMineCount = neighborsWithMine;
             }
         }
     }
+
+    // ----- "Hidden State" logic -----
 
     private void revealNeighbors() {
         for (Tile neighbor : neighbors) {
@@ -64,6 +93,8 @@ public class Tile {
         return false;
     }
 
+    // ----- Getters -----
+
     public boolean isHidden() {
         return this.hidden;
     }
@@ -73,11 +104,11 @@ public class Tile {
     }
 
     public boolean isEmpty() {
-        return (this.neighborWtihMineCount == 0);
+        return (this.neighborWithMineCount == 0);
     }
 
     public int getCount() {
-        return this.neighborWtihMineCount;
+        return this.neighborWithMineCount;
     }
 
     public int numNeighbors() {

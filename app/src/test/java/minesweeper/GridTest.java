@@ -27,7 +27,27 @@ public class GridTest {
     }
 
     @Test
-    public void testGridUpdatesStatuses() {
+    public void testRandomGridCreation() {
+        int NUMBER_ROWS = 20;
+        int NUMBER_COLS = 20;
+        int NUMBER_MINES = 40;
+        Grid grid = new Grid.Builder()
+                .numberRows(NUMBER_ROWS)
+                .numberCols(NUMBER_COLS)
+                .numberMines(NUMBER_MINES)
+                .build();
+
+        int countedMines = 0;
+        for (int row = 0; row < NUMBER_ROWS; row++) {
+            for (int col = 0; col < NUMBER_COLS; col++) {
+                if (grid.getTile(row, col).isMine()) countedMines++;
+            }
+        }
+        assert(countedMines == NUMBER_MINES);
+    }
+
+    @Test
+    public void testTileObserversUpdateTileStatuses() {
         // E-1-1
         // E-2-M
         // E-2-M
@@ -42,6 +62,7 @@ public class GridTest {
         grid.placeSpecificMine(1, 2);
         grid.placeSpecificMine(2, 2);
 
+        // Check all tiles have correct number of neighbors
         assertEquals(3, grid.getTile(0,0).numNeighbors());
         assertEquals(5, grid.getTile(0,1).numNeighbors());
         assertEquals(3, grid.getTile(0,2).numNeighbors());
@@ -52,8 +73,7 @@ public class GridTest {
         assertEquals(5, grid.getTile(2,1).numNeighbors());
         assertEquals(3, grid.getTile(2,2).numNeighbors());
 
-
-
+        // Check tiles values are as expected according to diagram
         assertTrue(grid.getTile(0,0).isEmpty());
         assertTrue(grid.getTile(1,0).isEmpty());
         assertTrue(grid.getTile(2,0).isEmpty());
