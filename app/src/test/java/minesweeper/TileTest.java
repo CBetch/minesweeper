@@ -32,7 +32,11 @@ public class TileTest {
         int NUMBER_ROWS = 3;
         int NUMBER_COLS = 3;
         int NUMBER_MINES = 0;
-        Grid grid = new Grid(NUMBER_ROWS, NUMBER_COLS, NUMBER_MINES);
+        Grid grid = new Grid.Builder()
+                .numberRows(NUMBER_ROWS)
+                .numberCols(NUMBER_COLS)
+                .numberMines(NUMBER_MINES)
+                .build();
         grid.placeSpecificMine(0, 2);
         grid.placeSpecificMine(2, 2);
 

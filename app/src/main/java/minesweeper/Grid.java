@@ -8,14 +8,41 @@ public class Grid {
     private int rows;
     private int cols;
 
-    public Grid(int rows, int cols, int numberMines) {
-        this.tiles = initializeGrid(rows, cols);
-        this.rows = rows;
-        this.cols = cols;
+    private Grid(Builder builder) {
+        this.rows = builder.rows;
+        this.cols = builder.cols;
+        this.tiles = initializeGrid(builder.rows, builder.cols);
 
-        placeMines(numberMines);
+        placeMines(builder.numberMines);
         connectNeighbors();
         updateStatuses();
+    }
+
+    public static class Builder {
+        private int rows = 9;
+        private int cols = 9;
+        private int numberMines = 10;
+
+        public Builder() {}
+
+        public Builder numberRows (int rows) {
+            this.rows = rows;
+            return this;
+        }
+
+        public Builder numberCols (int cols) {
+            this.cols = cols;
+            return this;
+        }
+
+        public Builder numberMines(int numberMines) {
+            this.numberMines = numberMines;
+            return this;
+        }
+
+        public Grid build() {
+            return new Grid(this);
+        }
     }
 
     private Tile[][] initializeGrid(int rows, int cols) {
