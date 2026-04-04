@@ -17,7 +17,13 @@ The `TileObserver` interface is implemented by the `Tile` class allowing Tiles t
 update each other when `placeMine()` is called via `notifyObservers()`. This eliminates the 
 need for a manual `updateStatuses()` sweep across the whole grid when a change is made.
 
-**3. Factory - `GameFactory`**
+**3. Strategy - `AgentStrategy`**
+The `AgentStrategy` interface allows different agent behaviors to be swapped at runtime
+without modifying `MinesweeperDriver`. Current implementations include `RandomAgentStrategy`
+(picks a random hidden, non-mine tile) and `CheatingAgentStrategy` (always picks the first
+known safe tile, guaranteeing a win). New strategies can be added without touching existing code.
+
+**4. Factory - `GameFactory`**
 The `GameFactory` class creates pre-configured `Game` instances for each standard
 difficulty (Beginner 9x9/10 mines, Intermediate 16x16/40 mines, Expert 30x16/99 mines), with 
 easy expansion for custom difficulties.

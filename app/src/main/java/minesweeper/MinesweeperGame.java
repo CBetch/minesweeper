@@ -30,10 +30,12 @@ public class MinesweeperGame {
             gameOver = true;
             wonGame = false;
             // TODO - trigger loss screen
+            System.out.println("Mine Clicked! Game Over");
         } else if (checkWin()){
             gameOver = true;
             wonGame = true;
             // TODO - trigger win screen
+            System.out.println("All empty tiles clicked! Game Over");
         }
     }
 

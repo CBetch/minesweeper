@@ -13,8 +13,8 @@ public class Grid {
         this.cols = builder.cols;
         this.tiles = initializeGrid(builder.rows, builder.cols);
 
-        placeMines(builder.numberMines);
         connectNeighbors();
+        placeMines(builder.numberMines);
     }
 
     public static class Builder {
