@@ -21,10 +21,8 @@ public class MinesweeperGUI extends JFrame{
         this.createMenu();
 
         this.setVisible(true);
-
-        //starting the game with default beginner if no input from the user
-        //this.startNewGame(GameFactory.beginner());
     }
+
     // ----- Background For Menu -----
     class BackgroundPanel extends JPanel {
         @Override
@@ -44,14 +42,11 @@ public class MinesweeperGUI extends JFrame{
     // ----- Menu -----
     private void createMenu(){
         gameMenuPanel = new BackgroundPanel();
-        Color customColor = new Color(145, 250, 180);
-        //gameMenuPanel.setBackground(customColor);
         gameMenuPanel.setLayout(new BorderLayout());
 
         JLabel title = new JLabel("MINESWEEPER");
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        Font font = new Font("Arial", Font.BOLD, 42);
-        title.setFont(font);
+        title.setFont(new Font("Monospaced", Font.BOLD, 42));
         title.setBorder(BorderFactory.createEmptyBorder(200,0,10,0));
         gameMenuPanel.add(title, BorderLayout.PAGE_START);
 
@@ -73,8 +68,6 @@ public class MinesweeperGUI extends JFrame{
     // ----- Second Page Menu -----
     private void createSecondMenu(){
         gameStartPanel = new JPanel();
-        Color customColor = new Color(145, 250, 180);
-        gameStartPanel.setBackground(customColor);
         gameStartPanel.setLayout(new GridLayout(4,1));
 
         JButton beginner = new JButton("Beginner");
@@ -82,10 +75,15 @@ public class MinesweeperGUI extends JFrame{
         JButton expert = new JButton("Expert");
         JButton custom = new JButton("Custom");
 
+        Font font = new Font("Monospaced", Font.PLAIN, 25);
         beginner.addActionListener(e -> startNewGame(GameFactory.beginner()));
+        beginner.setFont(font);
         intermediate.addActionListener(e -> startNewGame(GameFactory.intermediate()));
+        intermediate.setFont(font);
         expert.addActionListener(e -> startNewGame(GameFactory.expert()));
+        expert.setFont(font);
         custom.addActionListener(e -> createCustomGame());
+        custom.setFont(font);
 
         gameStartPanel.add(beginner);
         gameStartPanel.add(intermediate);
@@ -144,7 +142,7 @@ public class MinesweeperGUI extends JFrame{
         int cols = game.getGrid().getCols();
 
         int tileSize = 600/Math.max(rows, cols);
-        Font font = new Font("Arial", Font.PLAIN, tileSize/2);
+        Font font = new Font("Monospaced", Font.PLAIN, tileSize/2);
 
         boardPanel = new JPanel(new GridLayout(rows, cols));
         buttons = new JButton[rows][cols];
@@ -159,7 +157,21 @@ public class MinesweeperGUI extends JFrame{
                 int row = r;
                 int col = c;
 
-                button.addActionListener(e -> clickBoard(row, col));
+                button.addMouseListener(new java.awt.event.MouseAdapter(){
+                    @Override
+                    public void mousePressed(java.awt.event.MouseEvent e){
+                        Grid grid = game.getGrid();
+                        //right click allows the user to flag a certain block
+                        if(SwingUtilities.isRightMouseButton(e)){
+                            grid.getTile(row, col).toggleFlag();
+                            updateBoard();
+                            repaint();
+                        } else if(SwingUtilities.isLeftMouseButton(e)){ //still has left click capabilities
+                            clickBoard(row, col);
+                        }
+
+                    }
+                });
                 boardPanel.add(button);
             }
         }
@@ -179,9 +191,9 @@ public class MinesweeperGUI extends JFrame{
 
         if(game.isGameOver()){
             if(game.isWonGame()){
-                JOptionPane.showMessageDialog(this,"you win! ", "Game Over", JOptionPane.PLAIN_MESSAGE, null);
+                JOptionPane.showMessageDialog(this,"All empty tiles clicked! You win", "Game Over", JOptionPane.PLAIN_MESSAGE, null);
             }else{
-                JOptionPane.showMessageDialog(this,"you lose :( ", "Game Over", JOptionPane.PLAIN_MESSAGE, null);
+                JOptionPane.showMessageDialog(this,"Mine Clicked! You lose", "Game Over", JOptionPane.PLAIN_MESSAGE, null);
             }
             createMenu();
         }
@@ -197,9 +209,11 @@ public class MinesweeperGUI extends JFrame{
                 button.setOpaque(true);
                 button.setContentAreaFilled(true);
 
-                if(tile.isHidden()){
+                if(tile.isFlagged()){
+                    button.setText("F");
+                    button.setForeground(Color.PINK);
+                } else if(tile.isHidden()){
                     button.setText(" ");
-
                 } else if (tile.isMine()) {
                     button.setText("* ");
                     button.setForeground(Color.RED);

@@ -9,6 +9,7 @@ public class Tile implements TileObserver {
     private List<TileObserver> observers;
     private int neighborWithMineCount;
     private boolean isMine;
+    private boolean isFlagged;
 
     public Tile() {
         this.hidden = true;
@@ -16,6 +17,7 @@ public class Tile implements TileObserver {
         this.observers = new ArrayList<>();
         this.neighborWithMineCount = 0;
         this.isMine = false;
+        this.isFlagged = false;
     }
 
     // ---- Observer logic ----
@@ -94,15 +96,22 @@ public class Tile implements TileObserver {
         return false;
     }
 
+    // ----- Right Click Flag logic -----
+    public void toggleFlag(){
+        if(hidden){
+            isFlagged = !isFlagged;
+        }
+    }
+
     // ----- Getters -----
 
-    public boolean isHidden() {
-        return this.hidden;
-    }
+    public boolean isHidden() { return this.hidden;}
 
     public boolean isMine() {
         return this.isMine;
     }
+
+    public boolean isFlagged() { return this.isFlagged; }
 
     public boolean isEmpty() {
         return (this.neighborWithMineCount == 0);
@@ -115,4 +124,5 @@ public class Tile implements TileObserver {
     public int numNeighbors() {
         return neighbors.size();
     }
+
 }
