@@ -79,6 +79,11 @@ public class Tile implements TileObserver {
     }
 
     public boolean click() {
+        System.out.println("CLICK -> Tile@" + this.hashCode()
+                + " | mine=" + isMine
+                + " | hidden=" + hidden
+                + " | count=" + getCount());
+
         this.hidden = false;
         // return "true", end game if tile is a mine
         if (this.isMine()) return true;
@@ -86,7 +91,6 @@ public class Tile implements TileObserver {
         // Cascading reveal of empty tiles
         if (this.isEmpty()) revealNeighbors();
 
-        // TODO - Tile display
         return false;
     }
 
