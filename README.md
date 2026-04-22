@@ -36,3 +36,8 @@ easy expansion for custom difficulties.
   a subject and an observer through the same interface.
 - **Dependency injection** - `Game` receives a configured `Grid` rather than constructing
   one internally, allowing for a test grid to be injected directly.
+
+
+### Works Cited
+john watson. "Intro to GUIs with JAVA AWT and SWING." Youtube, March 15th 2023,
+https://www.youtube.com/watch?v=o5GOEDT-3hg

@@ -30,20 +30,20 @@ public class MinesweeperDriver {
         return turns;
     }
 
-    public void printBoard(MinesweeperGame game) {
-        Grid grid = game.getGrid();
-        for (int row = 0; row < grid.getRows(); row++) {
-            for (int col = 0; col < grid.getCols(); col++) {
-                Tile tile = grid.getTile(row, col);
-                if (tile.isMine()) {
-                    System.out.print("* ");
-                } else if (tile.isEmpty()) {
-                    System.out.print(". ");
-                } else {
-                    System.out.print(tile.getCount() + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
+//    public void printBoard(MinesweeperGame game) {
+//        Grid grid = game.getGrid();
+//        for (int row = 0; row < grid.getRows(); row++) {
+//            for (int col = 0; col < grid.getCols(); col++) {
+//                Tile tile = grid.getTile(row, col);
+//                if (tile.isMine()) {
+//                    System.out.print("* ");
+//                } else if (tile.isEmpty()) {
+//                    System.out.print(". ");
+//                } else {
+//                    System.out.print(tile.getCount() + " ");
+//                }
+//            }
+//            System.out.println();
+//        }
+//    }
 }

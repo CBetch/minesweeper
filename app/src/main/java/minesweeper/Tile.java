@@ -9,6 +9,7 @@ public class Tile implements TileObserver {
     private List<TileObserver> observers;
     private int neighborWithMineCount;
     private boolean isMine;
+    private boolean isFlagged;
 
     public Tile() {
         this.hidden = true;
@@ -16,6 +17,7 @@ public class Tile implements TileObserver {
         this.observers = new ArrayList<>();
         this.neighborWithMineCount = 0;
         this.isMine = false;
+        this.isFlagged = false;
     }
 
     // ---- Observer logic ----
@@ -79,6 +81,11 @@ public class Tile implements TileObserver {
     }
 
     public boolean click() {
+        System.out.println("CLICK -> Tile@" + this.hashCode()
+                + " | mine=" + isMine
+                + " | hidden=" + hidden
+                + " | count=" + getCount());
+
         this.hidden = false;
         // return "true", end game if tile is a mine
         if (this.isMine()) return true;
@@ -86,19 +93,25 @@ public class Tile implements TileObserver {
         // Cascading reveal of empty tiles
         if (this.isEmpty()) revealNeighbors();
 
-        // TODO - Tile display
         return false;
+    }
+
+    // ----- Right Click Flag logic -----
+    public void toggleFlag(){
+        if(hidden){
+            isFlagged = !isFlagged;
+        }
     }
 
     // ----- Getters -----
 
-    public boolean isHidden() {
-        return this.hidden;
-    }
+    public boolean isHidden() { return this.hidden;}
 
     public boolean isMine() {
         return this.isMine;
     }
+
+    public boolean isFlagged() { return this.isFlagged; }
 
     public boolean isEmpty() {
         return (this.neighborWithMineCount == 0);
@@ -111,4 +124,5 @@ public class Tile implements TileObserver {
     public int numNeighbors() {
         return neighbors.size();
     }
+
 }
