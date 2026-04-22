@@ -18,16 +18,27 @@ public class GridTest {
 
     @Test
     public void testGridConstructionPlacesMines() {
-        int NUMBER_ROWS = 2;
-        int NUMBER_COLS = 2;
-        int NUMBER_MINES = 2;
+        // M-M-M-M-M
+        // M-5-3-5-M
+        // M-3-E-3-M
+        // M-5-3-5-M
+        // M-M-M-M-M
+        int NUMBER_ROWS = 5;
+        int NUMBER_COLS = 5;
+        int NUMBER_MINES = 16;
         Grid grid = new Grid.Builder()
                 .numberRows(NUMBER_ROWS)
                 .numberCols(NUMBER_COLS)
                 .numberMines(NUMBER_MINES)
                 .build();
+        // simulate first click in middle of board
+        grid.placeMinesAvoiding(2, 2);
 
-        assert(getNumberMines(grid) == 2);
+        // mines should all be on "outer ring"
+        assertTrue(grid.getTile(2,2).isEmpty());
+        assertEquals(5, grid.getTile(1,1).getCount());
+        assertEquals(3, grid.getTile(1,2).getCount());
+        assert(getNumberMines(grid) == 16);
     }
 
     @Test
@@ -40,7 +51,8 @@ public class GridTest {
                 .numberCols(NUMBER_COLS)
                 .numberMines(NUMBER_MINES)
                 .build();
-
+        // first click in initializes mines
+        grid.placeMinesAvoiding(0, 0);
         assert(getNumberMines(grid) == NUMBER_MINES);
     }
 
