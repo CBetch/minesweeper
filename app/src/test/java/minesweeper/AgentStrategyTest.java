@@ -37,6 +37,9 @@ public class AgentStrategyTest {
         MinesweeperGame game = GameFactory.beginner();
         AgentStrategy randStrategy = new RandomAgentStrategy();
 
+        // first click cannot be a mine
+        game.clickTile(0, 0);
+
         // force agent to select mine tile (eventually)
         int[] move = randStrategy.selectTile(game);
         while(!game.getGrid().getTile(move[0], move[1]).isMine()) {

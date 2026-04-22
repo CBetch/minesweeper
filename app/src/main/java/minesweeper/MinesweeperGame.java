@@ -4,6 +4,7 @@ public class MinesweeperGame {
     private final Grid grid;
     private boolean gameOver = false;
     private boolean wonGame;
+    private boolean firstClick = true;
 
     public MinesweeperGame(Grid grid) {
         this.grid = grid;
@@ -25,6 +26,12 @@ public class MinesweeperGame {
 
         Tile tile = grid.getTile(row, col);
         if (!tile.isHidden()) return; // already revealed, do nothing
+
+        // Place mines on the first click, guaranteeing a safe opening patch
+        if (firstClick) {
+            grid.placeMinesAvoiding(row, col);
+            firstClick = false;
+        }
 
         if (tile.click()) {
             gameOver = true;

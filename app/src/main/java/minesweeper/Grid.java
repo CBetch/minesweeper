@@ -7,14 +7,16 @@ public class Grid {
     private final Tile[][] tiles;
     private int rows;
     private int cols;
+    private int numberMines;
 
     private Grid(Builder builder) {
         this.rows = builder.rows;
         this.cols = builder.cols;
+        this.numberMines = builder.numberMines;
         this.tiles = initializeGrid(builder.rows, builder.cols);
 
         connectNeighbors();
-        placeMines(builder.numberMines);
+        // Mine placement is deferred until the first click (see placeMinesAvoiding)
     }
 
     public static class Builder {
@@ -54,11 +56,16 @@ public class Grid {
         return tiles;
     }
 
-    private void placeMines(int numberMines) {
+    // Called on the first click. Guarantees the clicked tile and all its
+    // neighbors are mine-free, so the player always opens with a clear patch.
+    public void placeMinesAvoiding(int safeRow, int safeCol) {
         int placedMines = 0;
         while (placedMines < numberMines) {
             int row = rand.nextInt(this.rows);
             int col = rand.nextInt(this.cols);
+
+            // Skip the clicked tile and its immediate neighbors
+            if (Math.abs(row - safeRow) <= 1 && Math.abs(col - safeCol) <= 1) continue;
 
             if (!tiles[row][col].isMine()) {
                 tiles[row][col].placeMine();
